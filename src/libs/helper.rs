@@ -2,7 +2,7 @@ use rand::distributions::{Distribution, WeightedIndex};
 
 use super::consts::Position;
 
-pub fn select_random_weighted<Value>(items: &Vec<(Value, f32)>) -> &Value {
+pub fn select_random_weighted<Value>(items: &[(Value, f32)]) -> &Value {
     let mut rng = rand::thread_rng();
     let dist = WeightedIndex::new(items.iter().map(|item| item.1)).unwrap();
     let result = &items[dist.sample(&mut rng)].0;

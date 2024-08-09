@@ -2,6 +2,7 @@ use super::consts::Door;
 use super::consts::Position;
 use super::game::Game;
 use super::room::RoomPosition;
+use super::ui::show_fight_dialog;
 use std::io::Stdout;
 use termion::raw::RawTerminal;
 
@@ -27,6 +28,15 @@ impl PlayerController {
                 stdout,
             );
         } else if game.player.position.y > 2 {
+            let new_position = Position {
+                x: game.player.position.x,
+                y: game.player.position.y - 1,
+            };
+            if let Some(enemy) = game.current_room.get_enemy_at_position(new_position) {
+                show_fight_dialog(game.player, enemy, stdout);
+                return;
+            }
+
             game.move_player(0, -1, stdout);
         }
     }
@@ -50,6 +60,15 @@ impl PlayerController {
                 stdout,
             );
         } else if game.player.position.x < 11 {
+            let new_position = Position {
+                x: game.player.position.x + 1,
+                y: game.player.position.y,
+            };
+            if let Some(enemy) = game.current_room.get_enemy_at_position(new_position) {
+                show_fight_dialog(game.player, enemy, stdout);
+                return;
+            }
+
             game.move_player(1, 0, stdout);
         }
     }
@@ -73,6 +92,15 @@ impl PlayerController {
                 stdout,
             );
         } else if game.player.position.y < 6 {
+            let new_position = Position {
+                x: game.player.position.x,
+                y: game.player.position.y + 1,
+            };
+            if let Some(enemy) = game.current_room.get_enemy_at_position(new_position) {
+                show_fight_dialog(game.player, enemy, stdout);
+                return;
+            }
+
             game.move_player(0, 1, stdout);
         }
     }
@@ -96,6 +124,15 @@ impl PlayerController {
                 stdout,
             );
         } else if game.player.position.x > 2 {
+            let new_position = Position {
+                x: game.player.position.x - 1,
+                y: game.player.position.y,
+            };
+            if let Some(enemy) = game.current_room.get_enemy_at_position(new_position) {
+                show_fight_dialog(game.player, enemy, stdout);
+                return;
+            }
+
             game.move_player(-1, 0, stdout);
         }
     }

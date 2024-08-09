@@ -1,6 +1,6 @@
 use super::consts::Position;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy)]
 pub struct Player {
     pub position: Position,
     pub level: u16,

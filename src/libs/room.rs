@@ -1,10 +1,7 @@
-use super::config::{
-    enemy_level_function, get_dist_for_1_door, get_dist_for_2_doors, get_dist_for_3_doors,
-    get_dist_for_enemies,
-};
+use super::config::{enemy_level_function, DOOR_DIST_1, DOOR_DIST_2, DOOR_DIST_3, ENEMY_DIST};
 use super::consts::Door::{BOTTOM, LEFT, RIGHT, TOP};
 use super::consts::{Door, Position};
-use super::enemy::Enemy;
+use super::enemy::{self, Enemy};
 use super::helper::{generate_enemy_position, select_random_weighted};
 use rand::prelude::SliceRandom;
 use std::collections::{HashMap, HashSet};
@@ -121,6 +118,15 @@ impl Room {
         }
     }
 
+    pub fn get_enemy_at_position(&self, position: Position) -> Option<Enemy> {
+        for enemy in &self.enemies {
+            if enemy.position == position {
+                return Some(*enemy);
+            }
+        }
+        None
+    }
+
     pub fn create_next_room(
         grid_position: RoomPosition,
         direction: Door,
@@ -194,13 +200,13 @@ impl Room {
 
         let mut num_doors: u8 = 0;
         if result.len() == 1 {
-            let items = get_dist_for_1_door();
+            let items = DOOR_DIST_1;
             num_doors = *select_random_weighted::<u8>(&items);
         } else if result.len() == 2 {
-            let items = get_dist_for_2_doors();
+            let items = DOOR_DIST_2;
             num_doors = *select_random_weighted::<u8>(&items);
         } else if result.len() == 3 {
-            let items = get_dist_for_3_doors();
+            let items = DOOR_DIST_3;
             num_doors = *select_random_weighted::<u8>(&items);
         }
 
@@ -213,7 +219,7 @@ impl Room {
         let mut new_room = Room::new(grid_position, new_doors);
 
         // Generate enemies
-        let items = get_dist_for_enemies();
+        let items = ENEMY_DIST;
         let num_enemies = *select_random_weighted::<u8>(&items);
         if num_enemies == 0 {
             return new_room;

@@ -1,5 +1,7 @@
 use super::consts::Door;
+use super::enemy::Enemy;
 use super::game::Game;
+use super::player::Player;
 use super::room::{Room, RoomPosition};
 use std::collections::HashMap;
 use std::io::{Stdout, Write};
@@ -90,4 +92,8 @@ fn get_map_bounds(rooms: &HashMap<RoomPosition, Room>) -> (i8, i8, i8, i8) {
     }
 
     (min_x, max_x, min_y, max_y)
+}
+
+pub fn show_fight_dialog(player: Player, enemy: Enemy, stdout: &mut RawTerminal<Stdout>) {
+    write!(stdout, "{}AAAAA", termion::cursor::Goto(1, 9));
 }
