@@ -1,7 +1,8 @@
-pub mod consts;
-pub mod enemy;
+mod config;
+mod consts;
+mod enemy;
 pub mod game;
 mod helper;
-pub mod player;
-pub mod room;
+mod player;
+mod room;
 pub mod ui;

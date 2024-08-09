@@ -1,9 +1,11 @@
+use super::config::{
+    enemy_level_function, get_dist_for_1_door, get_dist_for_2_doors, get_dist_for_3_doors,
+    get_dist_for_enemies,
+};
 use super::consts::Door::{BOTTOM, LEFT, RIGHT, TOP};
 use super::consts::{Door, Position};
-use super::enemy::{self, Enemy};
+use super::enemy::Enemy;
 use super::helper::{generate_enemy_position, select_random_weighted};
-use rand::distributions::Distribution;
-use rand::distributions::WeightedIndex;
 use rand::prelude::SliceRandom;
 use std::collections::{HashMap, HashSet};
 use std::io::{Stdout, Write};
@@ -192,23 +194,14 @@ impl Room {
 
         let mut num_doors: u8 = 0;
         if result.len() == 1 {
-            let items = vec![(0, 0.25), (1, 0.75)];
+            let items = get_dist_for_1_door();
             num_doors = *select_random_weighted::<u8>(&items);
-            // let items = [(0, 0.25), (1, 0.75)];
-            // let dist = WeightedIndex::new(items.iter().map(|item| item.1)).unwrap();
-            // num_doors = items[dist.sample(&mut rng)].0;
         } else if result.len() == 2 {
-            let items = vec![(0, 0.15), (1, 0.35), (2, 0.5)];
+            let items = get_dist_for_2_doors();
             num_doors = *select_random_weighted::<u8>(&items);
-            // let items = [(0, 0.15), (1, 0.35), (2, 0.5)];
-            // let dist = WeightedIndex::new(items.iter().map(|item| item.1)).unwrap();
-            // num_doors = items[dist.sample(&mut rng)].0;
         } else if result.len() == 3 {
-            let items = vec![(0, 0.1), (1, 0.3), (2, 0.5), (3, 0.1)];
+            let items = get_dist_for_3_doors();
             num_doors = *select_random_weighted::<u8>(&items);
-            // let items = [(0, 0.1), (1, 0.3), (2, 0.5), (3, 0.1)];
-            // let dist = WeightedIndex::new(items.iter().map(|item| item.1)).unwrap();
-            // num_doors = items[dist.sample(&mut rng)].0;
         }
 
         let mut new_doors: Vec<_> = result
@@ -217,22 +210,29 @@ impl Room {
             .collect();
         new_doors.append(&mut neighbour_rooms);
 
-        let new_room = Room::new(grid_position, new_doors);
+        let mut new_room = Room::new(grid_position, new_doors);
 
         // Generate enemies
-        let items = vec![(0, 0.4), (1, 0.3), (2, 0.2), (3, 0.1)];
+        let items = get_dist_for_enemies();
         let num_enemies = *select_random_weighted::<u8>(&items);
         if num_enemies == 0 {
             return new_room;
         }
-        let enemy_positions: Vec<Position> = Vec::new();
-        for i in 0..num_enemies {
+        let mut enemy_positions: Vec<Position> = Vec::new();
+        for _ in 0..num_enemies {
             let mut position = generate_enemy_position();
             while enemy_positions.contains(&position) {
                 position = generate_enemy_position();
             }
 
-            let manhattant_distance_from_center = grid_position.x.abs() + grid_position.y.abs();
+            enemy_positions.append(&mut vec![position]);
+
+            let manhattan_distance_from_center: u16 =
+                grid_position.x.abs() as u16 + grid_position.y.abs() as u16;
+            let level = enemy_level_function(manhattan_distance_from_center);
+
+            let enemy = Enemy { position, level };
+            new_room.add_enemies(&mut vec![enemy]);
         }
 
         return new_room;

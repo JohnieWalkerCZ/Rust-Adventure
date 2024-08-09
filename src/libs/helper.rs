@@ -10,8 +10,8 @@ pub fn select_random_weighted<Value>(items: &Vec<(Value, f32)>) -> &Value {
 }
 
 pub fn generate_enemy_position() -> Position {
-    let x = (rand::random::<u8>() % 10) + 1;
-    let y = (rand::random::<u8>() % 3) + 1;
+    let x = (rand::random::<u8>() % 8) + 3;
+    let y = (rand::random::<u8>() % 3) + 3;
     let position = Position { x, y };
     position
 }
