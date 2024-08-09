@@ -67,7 +67,8 @@ pub fn print_minimap(
                     line.push_str("  ");
                 }
             }
-            write!(stdout, "{}{line}", termion::cursor::Goto(15, curr_line)).expect("Failed to move to next line");
+            write!(stdout, "{}{line}", termion::cursor::Goto(15, curr_line))
+                .expect("Failed to move to next line");
             curr_line += 1;
         }
     }

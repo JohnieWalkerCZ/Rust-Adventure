@@ -27,7 +27,8 @@ impl Game {
             current_room,
         }
     }
-    fn enter_new_room(
+
+    pub fn enter_new_room(
         &mut self,
         new_position: RoomPosition,
         entry_door: Door,
@@ -46,99 +47,7 @@ impl Game {
         self.current_room.render_room(self.player.position, stdout);
     }
 
-    pub fn move_up(&mut self, stdout: &mut RawTerminal<Stdout>) {
-        if self.player.position.y == 2
-            && self.current_room.doors.contains(&Door::TOP)
-            && (4..10).contains(&self.player.position.x)
-        {
-            let new_position = RoomPosition {
-                x: self.current_room.grid_position.x,
-                y: self.current_room.grid_position.y + 1,
-            };
-            self.enter_new_room(
-                new_position,
-                Door::BOTTOM,
-                Position {
-                    x: self.player.position.x,
-                    y: 6,
-                },
-                stdout,
-            );
-        } else if self.player.position.y > 2 {
-            self.move_player(0, -1, stdout);
-        }
-    }
-
-    pub fn move_right(&mut self, stdout: &mut RawTerminal<Stdout>) {
-        if self.player.position.x == 11
-            && self.current_room.doors.contains(&Door::RIGHT)
-            && (3..6).contains(&self.player.position.y)
-        {
-            let new_position = RoomPosition {
-                x: self.current_room.grid_position.x + 1,
-                y: self.current_room.grid_position.y,
-            };
-            self.enter_new_room(
-                new_position,
-                Door::LEFT,
-                Position {
-                    x: 2,
-                    y: self.player.position.y,
-                },
-                stdout,
-            );
-        } else if self.player.position.x < 11 {
-            self.move_player(1, 0, stdout);
-        }
-    }
-
-    pub fn move_down(&mut self, stdout: &mut RawTerminal<Stdout>) {
-        if self.player.position.y == 6
-            && self.current_room.doors.contains(&Door::BOTTOM)
-            && (4..10).contains(&self.player.position.x)
-        {
-            let new_position = RoomPosition {
-                x: self.current_room.grid_position.x,
-                y: self.current_room.grid_position.y - 1,
-            };
-            self.enter_new_room(
-                new_position,
-                Door::TOP,
-                Position {
-                    x: self.player.position.x,
-                    y: 2,
-                },
-                stdout,
-            );
-        } else if self.player.position.y < 6 {
-            self.move_player(0, 1, stdout);
-        }
-    }
-
-    pub fn move_left(&mut self, stdout: &mut RawTerminal<Stdout>) {
-        if self.player.position.x == 2
-            && self.current_room.doors.contains(&Door::LEFT)
-            && (3..6).contains(&self.player.position.y)
-        {
-            let new_position = RoomPosition {
-                x: self.current_room.grid_position.x - 1,
-                y: self.current_room.grid_position.y,
-            };
-            self.enter_new_room(
-                new_position,
-                Door::RIGHT,
-                Position {
-                    x: 11,
-                    y: self.player.position.y,
-                },
-                stdout,
-            );
-        } else if self.player.position.x > 2 {
-            self.move_player(-1, 0, stdout);
-        }
-    }
-
-    fn move_player(&mut self, dx: i16, dy: i16, stdout: &mut RawTerminal<Stdout>) {
+    pub fn move_player(&mut self, dx: i16, dy: i16, stdout: &mut RawTerminal<Stdout>) {
         self.clear_character(stdout);
         self.player.position.x = (self.player.position.x as i16 + dx) as u8;
         self.player.position.y = (self.player.position.y as i16 + dy) as u8;

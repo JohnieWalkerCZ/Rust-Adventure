@@ -1,3 +1,4 @@
+use libs::controller::PlayerController;
 use libs::game::Game;
 use libs::ui::print_minimap;
 use std::io::{stdin, stdout, Write};
@@ -33,10 +34,10 @@ fn main() {
     for c in stdin.keys() {
         match c.unwrap() {
             Key::Esc | Key::Char('q') => break,
-            Key::Up => game.move_up(&mut stdout),
-            Key::Right => game.move_right(&mut stdout),
-            Key::Down => game.move_down(&mut stdout),
-            Key::Left => game.move_left(&mut stdout),
+            Key::Up => PlayerController::move_up(&mut game, &mut stdout),
+            Key::Right => PlayerController::move_right(&mut game, &mut stdout),
+            Key::Down => PlayerController::move_down(&mut game, &mut stdout),
+            Key::Left => PlayerController::move_left(&mut game, &mut stdout),
             _ => continue,
         }
         write!(stdout, "{}", termion::cursor::Goto(1, 1)).expect("Failed move to 1 1");
