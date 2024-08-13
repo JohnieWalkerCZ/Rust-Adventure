@@ -8,6 +8,6 @@ pub struct Player {
 
 impl Player {
     pub fn new(position: Position) -> Player {
-        Player { position, level: 0 }
+        Player { position, level: 1 }
     }
 }

@@ -235,7 +235,7 @@ impl Room {
 
             let manhattan_distance_from_center: u16 =
                 grid_position.x.abs() as u16 + grid_position.y.abs() as u16;
-            let level = enemy_level_function(manhattan_distance_from_center);
+            let level = enemy_level_function(manhattan_distance_from_center).ceil() as u16;
 
             let enemy = Enemy { position, level };
             new_room.add_enemies(&mut vec![enemy]);

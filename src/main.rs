@@ -1,6 +1,6 @@
 use libs::controller::PlayerController;
 use libs::game::Game;
-use libs::ui::print_minimap;
+use libs::ui::Minimap;
 use std::io::{stdin, stdout, Write};
 use termion;
 use termion::event::Key;
@@ -25,8 +25,7 @@ fn main() {
     stdout.flush().unwrap();
 
     let mut game = Game::start();
-
-    print_minimap(&game.rooms, &game, &mut stdout);
+    Minimap::print_minimap(&game.rooms, &game, &mut stdout);
 
     game.current_room
         .render_room(game.player.position.clone(), &mut stdout);
@@ -42,7 +41,7 @@ fn main() {
         }
         write!(stdout, "{}", termion::cursor::Goto(1, 1)).expect("Failed move to 1 1");
         if DEBUG {
-            print_minimap(&game.rooms, &game, &mut stdout);
+            Minimap::print_minimap(&game.rooms, &game, &mut stdout);
         }
         stdout.flush().unwrap();
     }
