@@ -1,7 +1,7 @@
 use super::config::{enemy_level_function, DOOR_DIST_1, DOOR_DIST_2, DOOR_DIST_3, ENEMY_DIST};
 use super::consts::Door::{BOTTOM, LEFT, RIGHT, TOP};
 use super::consts::{Door, Position};
-use super::enemy::{self, Enemy};
+use super::enemy::Enemy;
 use super::helper::{generate_enemy_position, select_random_weighted};
 use rand::prelude::SliceRandom;
 use std::collections::{HashMap, HashSet};

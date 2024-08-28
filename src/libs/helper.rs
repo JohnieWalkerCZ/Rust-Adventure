@@ -1,6 +1,5 @@
-use rand::distributions::{Distribution, WeightedIndex};
-
 use super::consts::Position;
+use rand::distributions::{Distribution, WeightedIndex};
 
 pub fn select_random_weighted<Value>(items: &[(Value, f32)]) -> &Value {
     let mut rng = rand::thread_rng();

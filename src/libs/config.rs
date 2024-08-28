@@ -6,6 +6,9 @@ pub const DOOR_DIST_3: [(u8, f32); 4] = [(0, 0.1), (1, 0.3), (2, 0.5), (3, 0.1)]
 
 pub const ENEMY_DIST: [(u8, f32); 4] = [(0, 0.3), (1, 0.4), (2, 0.2), (3, 0.1)];
 
+pub const DIALOG_LINE: u16 = 9;
+pub const DIALOG_COLUMN: u16 = 1;
+
 pub fn enemy_level_function(x: u16) -> f32 {
     return x.pow(2) as f32 / 5.0;
 }

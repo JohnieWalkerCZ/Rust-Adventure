@@ -1,6 +1,6 @@
+use crate::libs::ui::minimap::Minimap;
 use libs::controller::PlayerController;
 use libs::game::Game;
-use libs::ui::Minimap;
 use std::io::{stdin, stdout, Write};
 use termion;
 use termion::event::Key;
@@ -37,6 +37,12 @@ fn main() {
             Key::Right => PlayerController::move_right(&mut game, &mut stdout),
             Key::Down => PlayerController::move_down(&mut game, &mut stdout),
             Key::Left => PlayerController::move_left(&mut game, &mut stdout),
+            Key::Char('y') | Key::Char('Y') | Key::Char('\n') => {
+                if !game.player.fighting {
+                    continue;
+                }
+                game.fight(&mut stdout);
+            }
             _ => continue,
         }
         write!(stdout, "{}", termion::cursor::Goto(1, 1)).expect("Failed move to 1 1");
